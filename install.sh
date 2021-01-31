@@ -791,19 +791,19 @@ tls_type() {
             echo -e "${OK} ${GreenBG} 已切换至 TLS1.2 and TLS1.3 ${Font}"
         fi
         systemctl restart nginx
-        judge "Nginx 重启"
+        judge "Nginx restart"
     else
-        echo -e "${Error} ${RedBG} Nginx 或 配置文件不存在 或当前安装版本为 h2 ，请正确安装脚本后执行${Font}"
+        echo -e "${Error} ${RedBG} Nginx or configuration file does not exist or the currently installed version is h2, please install the script correctly and execute${Font}"
     fi
 }
 show_access_log() {
-    [ -f ${v2ray_access_log} ] && tail -f ${v2ray_access_log} || echo -e "${RedBG}log文件不存在${Font}"
+    [ -f ${v2ray_access_log} ] && tail -f ${v2ray_access_log} || echo -e "${RedBG}log file does not exist ${Font}"
 }
 show_error_log() {
-    [ -f ${v2ray_error_log} ] && tail -f ${v2ray_error_log} || echo -e "${RedBG}log文件不存在${Font}"
+    [ -f ${v2ray_error_log} ] && tail -f ${v2ray_error_log} || echo -e "${RedBG}Log file does not exist ${Font}"
 }
 ssl_update_manuel() {
-    [ -f ${amce_sh_file} ] && "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" || echo -e "${RedBG}证书签发工具不存在，请确认你是否使用了自己的证书${Font}"
+    [ -f ${amce_sh_file} ] && "/root/.acme.sh"/acme.sh --cron --home "/root/.acme.sh" || echo -e "${RedBG}The certificate issuance tool does not exist, please confirm whether you use your own certificate${Font}"
     domain="$(info_extraction '\"add\"')"
     "$HOME"/.acme.sh/acme.sh --installcert -d "${domain}" --fullchainpath /data/v2ray.crt --keypath /data/v2ray.key --ecc
 }
@@ -812,7 +812,7 @@ bbr_boost_sh() {
     wget -N --no-check-certificate "https://raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
 }
 mtproxy_sh() {
-    echo -e "${Error} ${RedBG} 功能维护，暂不可用 ${Font}"
+    echo -e "${Error} ${RedBG} Function maintenance, temporarily unavailable ${Font}"
 }
 
 uninstall_all() {
@@ -822,12 +822,12 @@ uninstall_all() {
     [[ -d $v2ray_bin_dir ]] && rm -rf $v2ray_bin_dir
     [[ -d $v2ray_bin_dir_old ]] && rm -rf $v2ray_bin_dir_old
     if [[ -d $nginx_dir ]]; then
-        echo -e "${OK} ${Green} 是否卸载 Nginx [Y/N]? ${Font}"
+        echo -e "${OK} ${Green} Whether to uninstall Nginx [Y/N]? ${Font}"
         read -r uninstall_nginx
         case $uninstall_nginx in
         [yY][eE][sS] | [yY])
             rm -rf $nginx_dir
-            echo -e "${OK} ${Green} 已卸载 Nginx ${Font}"
+            echo -e "${OK} ${Green} Nginx Uninstalled ${Font}"
             ;;
         *) ;;
 
@@ -836,12 +836,12 @@ uninstall_all() {
     [[ -d $v2ray_conf_dir ]] && rm -rf $v2ray_conf_dir
     [[ -d $web_dir ]] && rm -rf $web_dir
     systemctl daemon-reload
-    echo -e "${OK} ${GreenBG} 已卸载，SSL证书文件已保留 ${Font}"
+    echo -e "${OK} ${GreenBG} Uninstalled, SSL certificate file has been retained ${Font}"
 }
 delete_tls_key_and_crt() {
     [[ -f $HOME/.acme.sh/acme.sh ]] && /root/.acme.sh/acme.sh uninstall >/dev/null 2>&1
     [[ -d $HOME/.acme.sh ]] && rm -rf "$HOME/.acme.sh"
-    echo -e "${OK} ${GreenBG} 已清空证书遗留文件 ${Font}"
+    echo -e "${OK} ${GreenBG} The remaining certificate files have been emptied ${Font}"
 }
 judge_mode() {
     if [ -f $v2ray_bin_dir/v2ray ] || [ -f $v2ray_bin_dir_old/v2ray ]; then
@@ -906,24 +906,24 @@ update_sh() {
     echo "$ol_version" >$version_cmp
     echo "$shell_version" >>$version_cmp
     if [[ "$shell_version" < "$(sort -rV $version_cmp | head -1)" ]]; then
-        echo -e "${OK} ${GreenBG} 存在新版本，是否更新 [Y/N]? ${Font}"
+        echo -e "${OK} ${GreenBG} There is a new version, whether to update [Y/N]? ${Font}"
         read -r update_confirm
         case $update_confirm in
         [yY][eE][sS] | [yY])
             wget -N --no-check-certificate https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/install.sh
-            echo -e "${OK} ${GreenBG} 更新完成 ${Font}"
+            echo -e "${OK} ${GreenBG} update completed ${Font}"
             exit 0
             ;;
         *) ;;
 
         esac
     else
-        echo -e "${OK} ${GreenBG} 当前版本为最新版本 ${Font}"
+        echo -e "${OK} ${GreenBG} The current version is the latest version ${Font}"
     fi
 
 }
 maintain() {
-    echo -e "${RedBG}该选项暂时无法使用${Font}"
+    echo -e "${RedBG}This option is temporarily unavailable${Font}"
     echo -e "${RedBG}$1${Font}"
     exit 0
 }
@@ -949,35 +949,35 @@ list() {
 
 menu() {
     update_sh
-    echo -e "\t V2ray 安装管理脚本 ${Red}[${shell_version}]${Font}"
+    echo -e "\t V2ray Installation management script ${Red}[${shell_version}]${Font}"
     echo -e "\t---authored by wulabing---"
     echo -e "\thttps://github.com/wulabing\n"
-    echo -e "当前已安装版本:${shell_mode}\n"
+    echo -e "Currently installed version:${shell_mode}\n"
 
-    echo -e "—————————————— 安装向导 ——————————————"""
-    echo -e "${Green}0.${Font}  升级 脚本"
-    echo -e "${Green}1.${Font}  安装 V2Ray (Nginx+ws+tls)"
-    echo -e "${Green}2.${Font}  安装 V2Ray (http/2)"
-    echo -e "${Green}3.${Font}  升级 V2Ray core"
-    echo -e "—————————————— 配置变更 ——————————————"
-    echo -e "${Green}4.${Font}  变更 UUID"
-    echo -e "${Green}5.${Font}  变更 alterid"
-    echo -e "${Green}6.${Font}  变更 port"
-    echo -e "${Green}7.${Font}  变更 TLS 版本(仅ws+tls有效)"
-    echo -e "—————————————— 查看信息 ——————————————"
-    echo -e "${Green}8.${Font}  查看 实时访问日志"
-    echo -e "${Green}9.${Font}  查看 实时错误日志"
-    echo -e "${Green}10.${Font} 查看 V2Ray 配置信息"
-    echo -e "—————————————— 其他选项 ——————————————"
-    echo -e "${Green}11.${Font} 安装 4合1 bbr 锐速安装脚本"
-    echo -e "${Green}12.${Font} 安装 MTproxy(支持TLS混淆)"
-    echo -e "${Green}13.${Font} 证书 有效期更新"
-    echo -e "${Green}14.${Font} 卸载 V2Ray"
-    echo -e "${Green}15.${Font} 更新 证书crontab计划任务"
-    echo -e "${Green}16.${Font} 清空 证书遗留文件"
-    echo -e "${Green}17.${Font} 退出 \n"
+    echo -e "—————————————— Setup Wizard ——————————————"""
+    echo -e "${Green}0.${Font}  Upgrade script"
+    echo -e "${Green}1.${Font}  Install V2Ray (Nginx+ws+tls)"
+    echo -e "${Green}2.${Font}  Install V2Ray (http/2)"
+    echo -e "${Green}3.${Font}  Upgrade V2Ray core"
+    echo -e "—————————————— Configuration changes ——————————————"
+    echo -e "${Green}4.${Font}  Change UUID"
+    echo -e "${Green}5.${Font}  Change alterid"
+    echo -e "${Green}6.${Font}  Change port"
+    echo -e "${Green}7.${Font}  Change TLS version (only ws+tls is valid))"
+    echo -e "—————————————— View information ——————————————"
+    echo -e "${Green}8.${Font}  View real-time access log"
+    echo -e "${Green}9.${Font}  View real-time error log"
+    echo -e "${Green}10.${Font} View V2Ray configuration information"
+    echo -e "—————————————— Other options ——————————————"
+    echo -e "${Green}11.${Font} Install 4 in 1 bbr sharp speed installation script"
+    echo -e "${Green}12.${Font} Install MTproxy (support TLS obfuscation)"
+    echo -e "${Green}13.${Font} Certificate Validity Update"
+    echo -e "${Green}14.${Font} Uninstall V2Ray"
+    echo -e "${Green}15.${Font} Update certificate crontab scheduled task"
+    echo -e "${Green}16.${Font} Empty certificate legacy files"
+    echo -e "${Green}17.${Font} keluar \n"
 
-    read -rp "请输入数字：" menu_num
+    read -rp "Harap masukkan angka：" menu_num
     case $menu_num in
     0)
         update_sh
@@ -991,20 +991,20 @@ menu() {
         install_v2_h2
         ;;
     3)
-        bash <(curl -L -s https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/${github_branch}/v2ray.sh)
+        bash <(curl -L -s https://raw.githubusercontent.com/janda09/V2Ray/master/v2ray.sh)
         ;;
     4)
-        read -rp "请输入UUID:" UUID
+        read -rp "Silahkan masukan UUID:" UUID
         modify_UUID
         start_process_systemd
         ;;
     5)
-        read -rp "请输入alterID:" alterID
+        read -rp "Silahkan masukan alterID:" alterID
         modify_alterid
         start_process_systemd
         ;;
     6)
-        read -rp "请输入连接端口:" port
+        read -rp "Harap masukkan port koneksi:" port
         if grep -q "ws" $v2ray_qr_config_file; then
             modify_nginx_port
         elif grep -q "h2" $v2ray_qr_config_file; then
@@ -1054,7 +1054,7 @@ menu() {
         exit 0
         ;;
     *)
-        echo -e "${RedBG}请输入正确的数字${Font}"
+        echo -e "${RedBG}Harap masukkan nomor yang benar${Font}"
         ;;
     esac
 }
